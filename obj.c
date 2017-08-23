@@ -326,6 +326,7 @@ void *read_tga(const char *filename, int *w, int *h, int *d)
     return 0;
 }
 
+#include "SOIL2.h"
 unsigned int obj_load_image(const char *filename)
 {
     unsigned int o = 0;
@@ -339,6 +340,9 @@ unsigned int obj_load_image(const char *filename)
         void *p;
 
         /* Read the image data from the named file to a new pixel buffer. */
+
+		o = SOIL_load_OGL_texture(filename, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
+		printf("loaded texture: %s -> %u\n", filename, o);
 
         if ((p = read_tga(filename, &w, &h, &d)))
         {
@@ -443,6 +447,12 @@ static void read_image(obj *O, int mi, int ki, const char *line,
 
         else if ((end = strstr(line, ".tga"))) { strncpy(map, line, end - line + 4); break; }
         else if ((end = strstr(line, ".TGA"))) { strncpy(map, line, end - line + 4); break; }
+        else if ((end = strstr(line, ".jpg"))) { strncpy(map, line, end - line + 4); break; }
+        else if ((end = strstr(line, ".JPG"))) { strncpy(map, line, end - line + 4); break; }
+        else if ((end = strstr(line, ".png"))) { strncpy(map, line, end - line + 4); break; }
+        else if ((end = strstr(line, ".PNG"))) { strncpy(map, line, end - line + 4); break; }
+        else if ((end = strstr(line, ".bmp"))) { strncpy(map, line, end - line + 4); break; }
+        else if ((end = strstr(line, ".BMP"))) { strncpy(map, line, end - line + 4); break; }
 
         /* If we see something we don't recognize, stop looking. */
 
